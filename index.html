@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog Cá Nhân - Bùi Tấn Đạt</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-" crossorigin="anonymous">
+
+  <!-- Tailwind CDN (optional utilities you already use) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- ✅ FIX: kéo "Về tôi" lên (sidebar span xuống main), không cần sửa CSS file -->
+  <style>
+    /* container shell: 2 cột, sidebar span xuống main */
+    .shell{
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+      align-items: start;
+      padding-top: 26px; /* thay cho .hero padding */
+      padding-bottom: 44px;
+    }
+
+    .shell > #profile{ grid-column: 1; }
+    .shell > .shell-side{
+      grid-column: 2;
+      grid-row: 1 / span 2; /* sidebar ăn từ hero xuống main */
+    }
+
+    .shell > .main-grid{
+      grid-column: 1;
+      padding-top: 16px;
+    }
+
+    /* sticky sidebar (vì bạn đổi class nên rule cũ .hero-right .side không còn ăn) */
+    .shell-side .side{
+      padding: 16px;
+      position: sticky;
+      top: 92px;
+    }
+
+    /* responsive: 1 cột */
+    @media (max-width: 992px){
+      .shell{ grid-template-columns: 1fr; }
+      .shell > .shell-side{ grid-column: 1; grid-row: auto; }
+      .shell-side .side{ position: relative; top: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Aurora background layers -->
+  <div class="aurora" aria-hidden="true">
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <span class="blob b3"></span>
+    <span class="noise"></span>
+  </div>
+
+  <!-- Spotlight follows cursor -->
+  <div class="spotlight" aria-hidden="true"></div>
+
+  <!-- Top floating nav -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-text">Blog Cá Nhân</span>
+      </div>
+
+      <nav class="topnav" id="tabbar">
+        <a class="toplink active" href="#profile"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a class="toplink" href="#about"><i class="fa-solid fa-user"></i><span>Về tôi</span></a>
+        <a class="toplink" href="#skills"><i class="fa-solid fa-code"></i><span>Kỹ năng</span></a>
+        <a class="toplink" href="#hub"><i class="fa-solid fa-layer-group"></i><span>Hồ sơ</span></a>
+        <a class="toplink" href="#contact"><i class="fa-solid fa-paper-plane"></i><span>Liên hệ</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ✅ NEW LAYOUT WRAPPER -->
+  <div class="container shell">
+
+    <!-- HERO LEFT -->
+    <section id="profile" class="hero-left glass border-glow">
+      <div class="hero-kicker">
+        <span class="pill"><i class="fa-solid fa-sparkles"></i> Ready to work</span>
+        <span class="pill soft"><i class="fa-solid fa-location-dot"></i> Việt Nam</span>
+      </div>
+
+      <h1 class="hero-title">Bùi Tấn Đạt</h1>
+      <p class="hero-sub">Công nghệ thông tin • Công nghệ phần mềm</p>
+
+      <div class="hero-contact">
+        <a class="mini-link" href="mailto:tandat21012004@gmail.com">
+          <i class="fa-solid fa-envelope"></i> tandat21012004@gmail.com
+        </a>
+        <a class="mini-link" href="tel:+84969507080">
+          <i class="fa-solid fa-phone"></i> 0969507080
+        </a>
+      </div>
+
+      <div class="hero-actions">
+        <a class="btnx primary" href="CV/CV-XinViec.jpg" download aria-label="Tải CV">
+          <i class="fa-solid fa-download"></i> Tải CV
+        </a>
+        <a class="btnx ghost" href="https://github.com/Tandat-562" target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-github"></i> GitHub
+        </a>
+        <a class="btnx ghost" href="https://www.facebook.com/tan.at.450556" target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-facebook"></i> Facebook
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-top"><i class="fa-solid fa-user-graduate"></i> Trạng thái</div>
+          <div class="stat-value">Sinh viên năm 4 • K22</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top"><i class="fa-solid fa-bolt"></i> Mục tiêu</div>
+          <div class="stat-value">Web/Backend</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIDEBAR RIGHT (spans down) -->
+    <aside class="shell-side">
+      <div class="side glass">
+
+        <div class="side-profile">
+          <div class="avatar-lg">
+            <img src="images/anhnen.jpg" alt="Ảnh Bùi Tấn Đạt" loading="lazy">
+          </div>
+
+          <div class="side-meta">
+            <div class="side-name">Bùi Tấn Đạt</div>
+            <div class="side-role">IT Student</div>
+
+            <div class="side-mini">
+              <span class="mini-pill"><i class="fa-solid fa-envelope"></i> tandat21012004@gmail.com</span>
+              <span class="mini-pill"><i class="fa-solid fa-phone"></i> 0969507080</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="side-block">
+          <div class="side-title"><i class="fa-solid fa-gamepad"></i> Sở thích</div>
+          <div class="chips">
+            <span class="chip"><i class="fa-solid fa-gamepad"></i> Chơi Game</span>
+            <span class="chip"><i class="fa-solid fa-headphones"></i> Nghe Nhạc</span>
+            <span class="chip"><i class="fa-regular fa-futbol"></i> Đá Bóng</span>
+            <span class="chip"><i class="fa-solid fa-mug-hot"></i> Uống Coffee</span>
+          </div>
+        </div>
+
+        <div class="side-block">
+          <div class="side-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Quick actions</div>
+          <div class="side-actions">
+            <a class="side-btn" href="#hub"><i class="fa-solid fa-layer-group"></i> Hồ sơ</a>
+            <a class="side-btn" href="#projects"><i class="fa-solid fa-rocket"></i> Dự án</a>
+            <a class="side-btn" href="#certificates"><i class="fa-solid fa-certificate"></i> Chứng chỉ</a>
+          </div>
+        </div>
+
+        <div class="side-foot">
+          <span class="dot"></span> Online • Open to collaborate
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN LEFT -->
+    <main class="main-grid">
+
+      <!-- ABOUT -->
+      <section id="about" class="panel glass">
+        <div class="panel-head">
+          <h2 class="panel-title"><i class="fa-solid fa-user"></i> Về tôi</h2>
+        </div>
+
+        <div class="about-grid">
+          <div class="quote">
+            <i class="fa-solid fa-quote-left"></i>
+            <p>
+              Sinh viên năm 4 CNTT (Công nghệ Phần mềm), đang tìm cơ hội Intern/Junior
+              Mình yêu thích xây dựng hệ thống web/backend theo hướng bền vững: clean code, chia module hợp lý, ưu tiên khả năng mở rộng và bảo trì
+              Chủ động học công nghệ mới, biết tận dụng công cụ/AI để tăng tốc nhưng vẫn đặt chất lượng lên hàng đầu
+            </p>
+            <div class="quote-line"></div>
+          </div>
+
+          <div class="strengths">
+            <div class="s-card good">
+              <div class="s-title"><i class="fa-solid fa-circle-check"></i> Điểm mạnh</div>
+              <ul class="s-list">
+                <li>Chủ động học công nghệ mới, biết dùng AI để tăng tốc.</li>
+                <li>Giao tiếp ổn, phối hợp nhóm tốt, tôn trọng deadline.</li>
+                <li>Thích tối ưu UI/UX và logic để sản phẩm “mượt”.</li>
+              </ul>
+            </div>
+
+            <div class="s-card warn">
+              <div class="s-title"><i class="fa-solid fa-triangle-exclamation"></i> Điểm yếu</div>
+              <ul class="s-list">
+                <li>Đôi khi cầu toàn nên mất thời gian ở chi tiết.</li>
+                <li>Đang cải thiện bằng checklist + chia task theo vòng.</li>
+                <li>Ưu tiên “đúng – đủ – đẹp” theo thứ tự hợp lý.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills" class="panel glass">
+        <div class="panel-head">
+          <h2 class="panel-title"><i class="fa-solid fa-code"></i> Kỹ năng</h2>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-box">
+            <div class="skill-head">
+              <span><i class="fa-solid fa-laptop-code"></i> Ngôn ngữ</span>
+              <span class="muted">Core</span>
+            </div>
+
+            <div class="skill-row" data-percent="85">
+              <div class="skill-top"><b>C#</b><span>85%</span></div>
+              <div class="bar"><div class="fill"></div></div>
+            </div>
+            <div class="skill-row" data-percent="55">
+              <div class="skill-top"><b>Java</b><span>55%</span></div>
+              <div class="bar"><div class="fill"></div></div>
+            </div>
+            <div class="skill-row" data-percent="70">
+              <div class="skill-top"><b>JavaScript</b><span>70%</span></div>
+              <div class="bar"><div class="fill"></div></div>
+            </div>
+          </div>
+
+          <div class="skill-box">
+            <div class="skill-head">
+              <span><i class="fa-solid fa-database"></i> Database</span>
+              <span class="muted">Data</span>
+            </div>
+
+            <div class="skill-row" data-percent="80">
+              <div class="skill-top"><b>SQL Server</b><span>80%</span></div>
+              <div class="bar"><div class="fill"></div></div>
+            </div>
+            <div class="skill-row" data-percent="55">
+              <div class="skill-top"><b>MongoDB</b><span>55%</span></div>
+              <div class="bar"><div class="fill"></div></div>
+            </div>
+          </div>
+
+          <div class="skill-box">
+            <div class="skill-head">
+              <span><i class="fa-solid fa-screwdriver-wrench"></i> Tools</span>
+              <span class="muted">Workflow</span>
+            </div>
+
+            <div class="tools-mini">
+              <div class="tool-mini"><i class="fa-solid fa-terminal"></i><span>IDE</span></div>
+              <div class="tool-mini"><i class="fa-solid fa-bug"></i><span>Debug</span></div>
+              <div class="tool-mini"><i class="fa-solid fa-server"></i><span>API</span></div>
+              <div class="tool-mini"><i class="fa-solid fa-database"></i><span>DB</span></div>
+            </div>
+
+            <div class="tool-note">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              Tập trung quy trình: code sạch, test cơ bản, deploy ổn.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HUB -->
+      <section id="hub" class="panel glass">
+        <div class="panel-head">
+          <h2 class="panel-title"><i class="fa-solid fa-layer-group"></i> Hồ sơ</h2>
+        </div>
+
+        <div class="hub-grid">
+          <div class="hub-left">
+            <div class="hub-card">
+              <div class="hub-card-title"><i class="fa-solid fa-graduation-cap"></i> Học vấn</div>
+
+              <div class="accordion accordion-flush" id="eduAcc">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="e1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#edu1" aria-expanded="true" aria-controls="edu1">
+                      Đại học Công Nghệ Thành Phố Hồ Chí Minh
+                    </button>
+                  </h2>
+                  <div id="edu1" class="accordion-collapse collapse show" aria-labelledby="e1" data-bs-parent="#eduAcc">
+                    <div class="accordion-body">
+                      <div class="meta-line"><i class="fa-regular fa-calendar"></i> 2022 - Hiện tại</div>
+                      <div class="meta-line"><i class="fa-solid fa-book"></i> Công Nghệ Thông Tin</div>
+                      <div class="meta-text">Sinh viên năm cuối chuyên ngành công nghệ phần mềm</div>
+                      <div class="tags">
+                        <span class="tag">Sinh viên năm 4</span>
+                        <span class="tag">Khóa K22</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="e2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#edu2" aria-expanded="false" aria-controls="edu2">
+                      THPT Nguyễn Chí Thanh
+                    </button>
+                  </h2>
+                  <div id="edu2" class="accordion-collapse collapse" aria-labelledby="e2" data-bs-parent="#eduAcc">
+                    <div class="accordion-body">
+                      <div class="meta-line"><i class="fa-regular fa-calendar"></i> 2020 - 2022</div>
+                      <div class="meta-line"><i class="fa-solid fa-school"></i> Trung học phổ thông</div>
+                      <div class="meta-text">Tốt nghiệp THPT với 3 năm đạt danh hiệu học sinh giỏi</div>
+                      <div class="tags">
+                        <span class="tag">3 năm</span>
+                        <span class="tag">Hòa Thành, Tây Ninh</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="e3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#edu3" aria-expanded="false" aria-controls="edu3">
+                      THCS Trần Hưng Đạo
+                    </button>
+                  </h2>
+                  <div id="edu3" class="accordion-collapse collapse" aria-labelledby="e3" data-bs-parent="#eduAcc">
+                    <div class="accordion-body">
+                      <div class="meta-line"><i class="fa-regular fa-calendar"></i> 2016 - 2020</div>
+                      <div class="meta-line"><i class="fa-solid fa-school"></i> Trung học cơ sở</div>
+                      <div class="meta-text">Tốt nghiệp THCS với 4 năm đạt danh hiệu học sinh giỏi</div>
+                      <div class="tags">
+                        <span class="tag">4 năm</span>
+                        <span class="tag">Tây Ninh</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hub-card" id="experience">
+              <div class="hub-card-title"><i class="fa-solid fa-briefcase"></i> Kinh nghiệm</div>
+
+              <div class="exp-card">
+                <div class="exp-head">
+                  <div class="exp-role">Nhân viên giao hàng</div>
+                  <div class="exp-time"><i class="fa-regular fa-calendar-check"></i> 1 năm 6 tháng</div>
+                </div>
+                <div class="exp-sub"><i class="fa-solid fa-store"></i> ShopeeFood</div>
+                <p class="exp-desc">
+                  Làm việc tại ShopeeFood trong <b>1 năm 6 tháng</b>, hoàn thành hơn <b>3.000 đơn hàng</b>.
+                  Có kinh nghiệm giao tiếp khách hàng, xử lý tình huống phát sinh và kỷ luật giờ giấc.
+                </p>
+                <div class="exp-chips">
+                  <span class="chip"><i class="fa-solid fa-comments"></i> Giao tiếp</span>
+                  <span class="chip"><i class="fa-solid fa-triangle-exclamation"></i> Xử lý tình huống</span>
+                  <span class="chip"><i class="fa-solid fa-stopwatch"></i> Đúng giờ</span>
+                  <span class="chip"><i class="fa-solid fa-box"></i> 3000+</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hub-right">
+            <div class="hub-card" id="projects">
+              <div class="hub-card-title"><i class="fa-solid fa-rocket"></i> Dự án</div>
+
+              <div class="proj-grid">
+                <a class="proj glass" href="https://github.com/Tandat-562/dat12312" target="_blank" rel="noopener noreferrer">
+                  <div class="proj-ico"><i class="fa-solid fa-wallet"></i></div>
+                  <div class="proj-body">
+                    <div class="proj-title">Website Quản lý</div>
+                    <div class="proj-desc">Quản lý chi tiêu, nguồn tiền ra/vào của cá nhân.</div>
+                    <div class="proj-tags">
+                      <span>C#</span><span>MVC</span><span>VisualStudioCode</span>
+                    </div>
+                  </div>
+                  <div class="proj-go"><i class="fa-brands fa-github"></i> Code</div>
+                </a>
+
+                <a class="proj glass" href="https://github.com/Tandat-562/webbanhang" target="_blank" rel="noopener noreferrer">
+                  <div class="proj-ico"><i class="fa-solid fa-cart-shopping"></i></div>
+                  <div class="proj-body">
+                    <div class="proj-title">Website Bán hàng</div>
+                    <div class="proj-desc">Bán hàng cho hộ kinh doanh online, quản lý mua & tồn kho.</div>
+                    <div class="proj-tags">
+                      <span>C#</span><span>VSCode</span><span>REST API</span>
+                    </div>
+                  </div>
+                  <div class="proj-go"><i class="fa-brands fa-github"></i> Code</div>
+                </a>
+              </div>
+            </div>
+
+            <div class="hub-card" id="certificates">
+              <div class="hub-card-title"><i class="fa-solid fa-certificate"></i> Chứng chỉ</div>
+
+              <div class="cert-grid">
+                <a class="cert glass" href="https://www.credly.com/badges/de6b30b7-cf59-40cb-aaf8-7b298c40f5d0" target="_blank" rel="noopener noreferrer">
+                  <div class="cert-img">
+                    <img src="images/javascript-essentials-1.png" alt="JavaScript Essentials 1 - Cisco">
+                  </div>
+                  <div class="cert-info">
+                    <div class="cert-title">JavaScript Essentials 1</div>
+                    <div class="cert-sub"><i class="fa-solid fa-building"></i> Cisco Networking Academy</div>
+                  </div>
+                </a>
+
+                <a class="cert glass" href="https://www.credly.com/badges/a0850191-b808-443a-a24f-60056d0478e6" target="_blank" rel="noopener noreferrer">
+                  <div class="cert-img">
+                    <img src="images/networking-basics.png" alt="Networking Basics - Cisco">
+                  </div>
+                  <div class="cert-info">
+                    <div class="cert-title">Networking Basics</div>
+                    <div class="cert-sub"><i class="fa-solid fa-building"></i> Cisco Networking Academy</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="panel glass">
+        <div class="panel-head">
+          <h2 class="panel-title"><i class="fa-solid fa-paper-plane"></i> Liên hệ</h2>
+          <p class="panel-desc">Chọn nhanh 1 kênh để kết nối.</p>
+        </div>
+
+        <div class="contact-grid">
+          <a class="c-card" href="mailto:tandat21012004@gmail.com">
+            <div class="c-ico"><i class="fa-solid fa-envelope"></i></div>
+            <div>
+              <div class="c-title">Email</div>
+              <div class="c-sub">tandat21012004@gmail.com</div>
+            </div>
+            <i class="fa-solid fa-arrow-right c-arrow"></i>
+          </a>
+
+          <a class="c-card" href="tel:+84969507080">
+            <div class="c-ico"><i class="fa-solid fa-phone"></i></div>
+            <div>
+              <div class="c-title">Điện thoại</div>
+              <div class="c-sub">0969507080</div>
+            </div>
+            <i class="fa-solid fa-arrow-right c-arrow"></i>
+          </a>
+
+          <a class="c-card" href="https://github.com/Tandat-562" target="_blank" rel="noopener noreferrer">
+            <div class="c-ico"><i class="fa-brands fa-github"></i></div>
+            <div>
+              <div class="c-title">GitHub</div>
+              <div class="c-sub">Tandat-562</div>
+            </div>
+            <i class="fa-solid fa-arrow-right c-arrow"></i>
+          </a>
+
+          <a class="c-card" href="https://www.facebook.com/tan.at.450556" target="_blank" rel="noopener noreferrer">
+            <div class="c-ico"><i class="fa-brands fa-facebook"></i></div>
+            <div>
+              <div class="c-title">Facebook</div>
+              <div class="c-sub">Tấn Đạt</div>
+            </div>
+            <i class="fa-solid fa-arrow-right c-arrow"></i>
+          </a>
+        </div>
+      </section>
+
+    </main>
+
+  </div><!-- /container shell -->
+
+  <!-- Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-" crossorigin="anonymous"></script>
+
+  <script>
+    // Spotlight follow cursor
+    (function(){
+      const spot = document.querySelector('.spotlight');
+      window.addEventListener('mousemove', (e) => {
+        spot.style.setProperty('--x', e.clientX + 'px');
+        spot.style.setProperty('--y', e.clientY + 'px');
+      }, { passive: true });
+    })();
+
+    // Active nav on scroll + smooth scrolling
+    (function(){
+      const links = Array.from(document.querySelectorAll('#tabbar .toplink'));
+      const targets = links
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      function setActive(id){
+        links.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(ent => {
+          if(ent.isIntersecting){
+            setActive(ent.target.id);
+          }
+        });
+      }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+
+      targets.forEach(t => obs.observe(t));
+
+      links.forEach(a => {
+        a.addEventListener('click', (e) => {
+          const el = document.querySelector(a.getAttribute('href'));
+          if(!el) return;
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    })();
+
+    // Skill bars animate on view
+    (function(){
+      const rows = document.querySelectorAll('.skill-row');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(ent => {
+          if(ent.isIntersecting){
+            const row = ent.target;
+            const p = row.getAttribute('data-percent') || '0';
+            row.style.setProperty('--p', p + '%');
+            row.classList.add('run');
+            io.unobserve(row);
+          }
+        });
+      }, { threshold: 0.35 });
+
+      rows.forEach(r => io.observe(r));
+    })();
+  </script>
+</body>
+</html>
