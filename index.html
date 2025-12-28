@@ -81,6 +81,7 @@
       </div>
 
       <nav class="topnav" id="tabbar">
+        <a class="toplink" href="#blog"><i class="fa-solid fa-pen-nib"></i><span>Blog</span></a>
         <a class="toplink active" href="#profile"><i class="fa-solid fa-house"></i><span>Home</span></a>
         <a class="toplink" href="#about"><i class="fa-solid fa-user"></i><span>Về tôi</span></a>
         <a class="toplink" href="#skills"><i class="fa-solid fa-code"></i><span>Kỹ năng</span></a>
@@ -286,6 +287,49 @@
           </div>
         </div>
       </section>
+
+<!-- BLOG -->
+<section id="blog" class="panel glass">
+  <div class="panel-head">
+    <h2 class="panel-title"><i class="fa-solid fa-pen-nib"></i> Blog chia sẻ</h2>
+    
+  </div>
+
+  <!-- Controls -->
+  <div class="blog-controls">
+    <div class="blog-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="blogSearch" type="text" placeholder="Tìm bài viết... (VD: GitHub Pages, UI, JS)" />
+    </div>
+
+    <div class="blog-tags" id="blogTags">
+      <!-- tags render bằng JS -->
+    </div>
+  </div>
+
+  <!-- List -->
+  <div class="blog-grid" id="blogGrid"></div>
+</section>
+
+<!-- BLOG MODAL -->
+<div class="blog-modal" id="blogModal" aria-hidden="true">
+  <div class="blog-modal-backdrop" data-close="1"></div>
+
+  <div class="blog-modal-card glass">
+    <div class="blog-modal-head">
+      <div>
+        <div class="blog-modal-title" id="blogModalTitle">Title</div>
+        <div class="blog-modal-meta" id="blogModalMeta">Meta</div>
+      </div>
+      <button class="blog-modal-close" type="button" aria-label="Đóng" data-close="1">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="blog-modal-body" id="blogModalBody"></div>
+  </div>
+</div>
+
 
       <!-- HUB -->
       <section id="hub" class="panel glass">
@@ -556,5 +600,187 @@
       rows.forEach(r => io.observe(r));
     })();
   </script>
+  <script>
+    // ===== BLOG DATA (bạn chỉ cần thêm bài ở đây) =====
+    const BLOG_POSTS = [
+      {
+        id: "deploy-github-pages",
+        title: "Deploy Portfolio lên GitHub Pages (từ A-Z)",
+        date: "2025-12-28",
+        tags: ["GitHub", "Deploy", "Pages"],
+        excerpt: "Các bước push code, bật GitHub Pages, xử lý path/404 và lấy link gửi giảng viên.",
+        content: `
+          <p>Bài này hướng dẫn bạn deploy portfolio lên GitHub Pages nhanh và chuẩn:</p>
+          <h3>1) Push code lên GitHub</h3>
+          <ul>
+            <li>git init → git add . → git commit</li>
+            <li>git remote add origin … → git push -u origin main</li>
+          </ul>
+          <h3>2) Bật GitHub Pages</h3>
+          <ul>
+            <li>Repo → Settings → Pages</li>
+            <li>Source: Deploy from branch → main → /root</li>
+          </ul>
+          <h3>3) Lưu ý lỗi hay gặp</h3>
+          <ul>
+            <li>Đường dẫn ảnh/CV phải đúng (ưu tiên path tương đối)</li>
+            <li>Chờ 1-3 phút để Pages build xong</li>
+          </ul>
+        `
+      },
+      {
+        id: "smooth-scroll-active-tab",
+        title: "Smooth scroll + Active tab mượt như app",
+        date: "2025-12-28",
+        tags: ["JavaScript", "UI/UX"],
+        excerpt: "Dùng IntersectionObserver để tự highlight tab theo section khi cuộn trang.",
+        content: `
+          <p>Mục tiêu: khi cuộn tới section nào thì tab đó tự active.</p>
+          <h3>Ý tưởng</h3>
+          <ul>
+            <li>Lấy danh sách section theo id</li>
+            <li>IntersectionObserver quan sát section</li>
+            <li>Section nào vào vùng nhìn → set active link</li>
+          </ul>
+          <p>Tip: chỉnh <b>rootMargin</b> để active đúng cảm giác.</p>
+        `
+      },
+      {
+        id: "progress-bar-on-scroll",
+        title: "Progress bar kỹ năng chạy khi cuộn (trông xịn hơn)",
+        date: "2025-12-28",
+        tags: ["JavaScript", "Animation"],
+        excerpt: "Tối ưu bằng IntersectionObserver: chỉ animate một lần khi section xuất hiện.",
+        content: `
+          <p>Thay vì chạy ngay khi load, ta animate khi user cuộn tới.</p>
+          <h3>Ưu điểm</h3>
+          <ul>
+            <li>Đỡ tốn tài nguyên</li>
+            <li>Trải nghiệm “wow” hơn</li>
+            <li>Code gọn, dễ maintain</li>
+          </ul>
+        `
+      }
+    ];
+  
+    // ===== BLOG RENDER =====
+    (function(){
+      const grid = document.getElementById('blogGrid');
+      const tagsWrap = document.getElementById('blogTags');
+      const input = document.getElementById('blogSearch');
+  
+      const modal = document.getElementById('blogModal');
+      const mTitle = document.getElementById('blogModalTitle');
+      const mMeta = document.getElementById('blogModalMeta');
+      const mBody = document.getElementById('blogModalBody');
+  
+      if(!grid || !tagsWrap || !input || !modal) return;
+  
+      let activeTag = 'Tất cả';
+  
+      function uniqueTags(){
+        const all = new Set();
+        BLOG_POSTS.forEach(p => (p.tags || []).forEach(t => all.add(t)));
+        return ['Tất cả', ...Array.from(all)];
+      }
+  
+      function formatDate(iso){
+        try{
+          const d = new Date(iso);
+          return d.toLocaleDateString('vi-VN', { year:'numeric', month:'2-digit', day:'2-digit' });
+        }catch(e){ return iso; }
+      }
+  
+      function renderTags(){
+        tagsWrap.innerHTML = '';
+        uniqueTags().forEach(t => {
+          const btn = document.createElement('div');
+          btn.className = 'blog-tag' + (t === activeTag ? ' active' : '');
+          btn.textContent = t;
+          btn.addEventListener('click', () => {
+            activeTag = t;
+            renderTags();
+            renderList();
+          });
+          tagsWrap.appendChild(btn);
+        });
+      }
+  
+      function matches(post, q){
+        const text = (post.title + ' ' + post.excerpt + ' ' + (post.tags||[]).join(' ') + ' ' + (post.content||'')).toLowerCase();
+        return text.includes(q);
+      }
+  
+      function openModal(post){
+        mTitle.textContent = post.title;
+        mMeta.innerHTML = `
+          <span class="blog-chip"><i class="fa-regular fa-calendar"></i> ${formatDate(post.date)}</span>
+          ${(post.tags||[]).map(t => `<span class="blog-chip">#${t}</span>`).join('')}
+        `;
+        mBody.innerHTML = post.content || '';
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+  
+      function closeModal(){
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+  
+      function renderList(){
+        const q = input.value.trim().toLowerCase();
+        const data = BLOG_POSTS
+          .filter(p => activeTag === 'Tất cả' ? true : (p.tags||[]).includes(activeTag))
+          .filter(p => q ? matches(p, q) : true)
+          .sort((a,b) => new Date(b.date) - new Date(a.date));
+  
+        grid.innerHTML = '';
+  
+        if(data.length === 0){
+          grid.innerHTML = `<div class="blog-card"><div class="blog-title">Không tìm thấy bài viết phù hợp.</div><div class="blog-desc">Thử từ khóa khác hoặc chọn tag “Tất cả”.</div></div>`;
+          return;
+        }
+  
+        data.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'blog-card';
+  
+          card.innerHTML = `
+            <div class="blog-top">
+              <div class="blog-title">${p.title}</div>
+              <div class="blog-date">${formatDate(p.date)}</div>
+            </div>
+            <div class="blog-desc">${p.excerpt || ''}</div>
+            <div class="blog-meta">
+              ${(p.tags||[]).map(t => `<span class="blog-chip">#${t}</span>`).join('')}
+              <button class="blog-read" type="button"><i class="fa-solid fa-book-open"></i> Đọc</button>
+            </div>
+          `;
+  
+          card.querySelector('.blog-read').addEventListener('click', () => openModal(p));
+          grid.appendChild(card);
+        });
+      }
+  
+      // events
+      input.addEventListener('input', renderList);
+  
+      modal.addEventListener('click', (e) => {
+        const close = e.target.closest('[data-close="1"]');
+        if(close) closeModal();
+      });
+  
+      window.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+      });
+  
+      // init
+      renderTags();
+      renderList();
+    })();
+  </script>
+  
 </body>
 </html>
