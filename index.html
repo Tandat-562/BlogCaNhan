@@ -601,67 +601,207 @@
     })();
   </script>
   <script>
-    // ===== BLOG DATA (bạn chỉ cần thêm bài ở đây) =====
+    // ===== BLOG DATA (chỉ cần thêm bài ở đây) =====
     const BLOG_POSTS = [
-      {
-        id: "deploy-github-pages",
-        title: "Deploy Portfolio lên GitHub Pages (từ A-Z)",
-        date: "2025-12-28",
-        tags: ["GitHub", "Deploy", "Pages"],
-        excerpt: "Các bước push code, bật GitHub Pages, xử lý path/404 và lấy link gửi giảng viên.",
-        content: `
-          <p>Bài này hướng dẫn bạn deploy portfolio lên GitHub Pages nhanh và chuẩn:</p>
-          <h3>1) Push code lên GitHub</h3>
-          <ul>
-            <li>git init → git add . → git commit</li>
-            <li>git remote add origin … → git push -u origin main</li>
-          </ul>
-          <h3>2) Bật GitHub Pages</h3>
-          <ul>
-            <li>Repo → Settings → Pages</li>
-            <li>Source: Deploy from branch → main → /root</li>
-          </ul>
-          <h3>3) Lưu ý lỗi hay gặp</h3>
-          <ul>
-            <li>Đường dẫn ảnh/CV phải đúng (ưu tiên path tương đối)</li>
-            <li>Chờ 1-3 phút để Pages build xong</li>
-          </ul>
-        `
-      },
-      {
-        id: "smooth-scroll-active-tab",
-        title: "Smooth scroll + Active tab mượt như app",
-        date: "2025-12-28",
-        tags: ["JavaScript", "UI/UX"],
-        excerpt: "Dùng IntersectionObserver để tự highlight tab theo section khi cuộn trang.",
-        content: `
-          <p>Mục tiêu: khi cuộn tới section nào thì tab đó tự active.</p>
-          <h3>Ý tưởng</h3>
-          <ul>
-            <li>Lấy danh sách section theo id</li>
-            <li>IntersectionObserver quan sát section</li>
-            <li>Section nào vào vùng nhìn → set active link</li>
-          </ul>
-          <p>Tip: chỉnh <b>rootMargin</b> để active đúng cảm giác.</p>
-        `
-      },
-      {
-        id: "progress-bar-on-scroll",
-        title: "Progress bar kỹ năng chạy khi cuộn (trông xịn hơn)",
-        date: "2025-12-28",
-        tags: ["JavaScript", "Animation"],
-        excerpt: "Tối ưu bằng IntersectionObserver: chỉ animate một lần khi section xuất hiện.",
-        content: `
-          <p>Thay vì chạy ngay khi load, ta animate khi user cuộn tới.</p>
-          <h3>Ưu điểm</h3>
-          <ul>
-            <li>Đỡ tốn tài nguyên</li>
-            <li>Trải nghiệm “wow” hơn</li>
-            <li>Code gọn, dễ maintain</li>
-          </ul>
-        `
-      }
-    ];
+  {
+    id: "web-performance-lighthouse",
+    title: "Tối ưu hiệu năng Portfolio: Lighthouse 90+ (Core Web Vitals cơ bản)",
+    date: "2025-12-28",
+    tags: ["Performance", "Lighthouse", "Web"],
+    excerpt: "Tối ưu ảnh, font, JS, caching để web load nhanh – điểm Lighthouse cao – trải nghiệm mượt trên mobile.",
+    content: `
+      <p>Portfolio 1 trang vẫn có thể chậm nếu ảnh nặng, font tải sai, hoặc JS chạy dư thừa. Mục tiêu là đạt Lighthouse 90+.</p>
+
+      <h3>1) Ảnh: giảm dung lượng là “ăn điểm” mạnh nhất</h3>
+      <ul>
+        <li>Đổi ảnh sang <b>WebP</b> nếu có thể (dung lượng giảm đáng kể).</li>
+        <li>Hero/avatar: dùng kích thước đúng nhu cầu (không up ảnh 4K rồi CSS thu nhỏ).</li>
+        <li>Thêm <code>loading="lazy"</code> cho ảnh phía dưới fold.</li>
+      </ul>
+
+      <h3>2) Font: tránh “giật chữ” (FOIT/FOUT)</h3>
+      <ul>
+        <li>Dùng <code>display=swap</code> (Google Fonts đã có).</li>
+        <li>Chỉ load weight cần thiết (ví dụ 400/600/800).</li>
+      </ul>
+
+      <h3>3) JS: chỉ chạy khi cần</h3>
+      <ul>
+        <li>Animation skill bar dùng IntersectionObserver (chạy 1 lần rồi stop).</li>
+        <li>Gộp script, tránh listener quá nhiều.</li>
+      </ul>
+
+      <h3>4) Kiểm tra nhanh</h3>
+      <ul>
+        <li>Chrome DevTools → Lighthouse</li>
+        <li>Network tab: xem file nào nặng nhất</li>
+      </ul>
+
+      <p><b>Kết luận:</b> Portfolio “nhanh + gọn” tạo ấn tượng chuyên nghiệp hơn rất nhiều.</p>
+    `
+  },
+
+  {
+    id: "security-headers-github-pages",
+    title: "Bảo mật cơ bản cho website tĩnh: CSP, headers & chống XSS nhẹ nhàng",
+    date: "2025-12-28",
+    tags: ["Security", "CSP", "Web"],
+    excerpt: "Website tĩnh cũng cần bảo mật: hạn chế script lạ, tránh nhúng bậy, cấu trúc code an toàn khi render HTML.",
+    content: `
+      <p>Portfolio tĩnh ít rủi ro hơn backend, nhưng vẫn có thể bị nhúng script lạ nếu bạn chèn HTML không kiểm soát.</p>
+
+      <h3>1) Content Security Policy (CSP) là gì?</h3>
+      <ul>
+        <li>CSP giúp giới hạn nguồn được phép load script/css/img.</li>
+        <li>Giảm nguy cơ XSS và nhúng tài nguyên độc hại.</li>
+      </ul>
+
+      <h3>2) Với GitHub Pages có làm được không?</h3>
+      <ul>
+        <li>Không cấu hình header trực tiếp như server riêng, nhưng bạn có thể:</li>
+        <li>Tránh <b>inline script</b> không cần thiết.</li>
+        <li>Hạn chế CDN không rõ nguồn.</li>
+      </ul>
+
+      <h3>3) Lưu ý khi render blog content</h3>
+      <ul>
+        <li>Nếu bạn render HTML từ dữ liệu (như blog modal), hãy chỉ dùng content do bạn tự viết.</li>
+        <li>Không lấy content từ user input rồi <code>innerHTML</code>.</li>
+      </ul>
+
+      <p><b>Kết luận:</b> Biết CSP & thói quen code an toàn là điểm cộng lớn khi phỏng vấn.</p>
+    `
+  },
+
+  {
+    id: "frontend-architecture-single-page",
+    title: "Kiến trúc Frontend cho Portfolio 1 trang: tách module, data-driven, dễ mở rộng",
+    date: "2025-12-28",
+    tags: ["Architecture", "JavaScript", "Clean Code"],
+    excerpt: "Cách tổ chức code để thêm mục Blog/Projects không bị rối: data layer, render layer, ui layer.",
+    content: `
+      <p>Portfolio 1 trang nhìn đơn giản, nhưng nếu thêm Blog/Project/Modal/Filter… rất dễ rối nếu viết “spaghetti”.</p>
+
+      <h3>1) Tư duy data-driven</h3>
+      <ul>
+        <li>Dữ liệu nằm trong 1 mảng (BLOG_POSTS / PROJECTS).</li>
+        <li>UI chỉ render từ data, không hard-code HTML lặp lại.</li>
+      </ul>
+
+      <h3>2) Chia 3 lớp</h3>
+      <ul>
+        <li><b>Data layer:</b> các object bài viết.</li>
+        <li><b>Render layer:</b> renderTags(), renderList().</li>
+        <li><b>UI layer:</b> openModal(), closeModal(), events.</li>
+      </ul>
+
+      <h3>3) Lợi ích</h3>
+      <ul>
+        <li>Thêm bài mới chỉ cần thêm object.</li>
+        <li>Dễ refactor sang JSON hoặc CMS sau này.</li>
+        <li>Dễ test logic filter/search.</li>
+      </ul>
+
+      <p><b>Kết luận:</b> Đây là kiểu tổ chức code giống “sản phẩm thật”.</p>
+    `
+  },
+
+  {
+    id: "seo-for-portfolio",
+    title: "SEO cơ bản cho Portfolio: meta, Open Graph, sitemap đơn giản, semantic HTML",
+    date: "2025-12-28",
+    tags: ["SEO", "HTML", "Web"],
+    excerpt: "Dù là 1 trang, bạn vẫn tối ưu được SEO: title/description, OG card, heading chuẩn, alt ảnh.",
+    content: `
+      <p>SEO không chỉ dành cho blog lớn. Portfolio tối ưu SEO giúp HR tìm thấy bạn dễ hơn.</p>
+
+      <h3>1) Meta quan trọng</h3>
+      <ul>
+        <li><code>&lt;title&gt;</code> rõ: Tên + vị trí + tech.</li>
+        <li><code>meta description</code> 140–160 ký tự, đúng mục tiêu tuyển dụng.</li>
+      </ul>
+
+      <h3>2) Open Graph (chia sẻ đẹp lên Facebook/Zalo)</h3>
+      <ul>
+        <li>Thêm OG title/description/image để link preview đẹp.</li>
+        <li>Ảnh OG nên 1200x630.</li>
+      </ul>
+
+      <h3>3) Semantic HTML</h3>
+      <ul>
+        <li>Dùng <code>&lt;header&gt; &lt;main&gt; &lt;section&gt; &lt;footer&gt;</code> đúng nghĩa.</li>
+        <li>Heading theo thứ tự: H1 → H2 → H3.</li>
+        <li>Ảnh có <code>alt</code> mô tả.</li>
+      </ul>
+
+      <p><b>Kết luận:</b> SEO tốt làm portfolio “đúng chuẩn web” hơn nhiều.</p>
+    `
+  },
+
+  {
+    id: "ci-cd-github-actions-pages",
+    title: "CI/CD cho Portfolio bằng GitHub Actions: auto build + deploy Pages",
+    date: "2025-12-28",
+    tags: ["CI/CD", "GitHub Actions", "Deploy"],
+    excerpt: "Tự động deploy khi push: giảm thao tác tay, chuyên nghiệp, giống quy trình công ty.",
+    content: `
+      <p>Nếu bạn muốn “xịn” hơn bật Pages thủ công, hãy dùng GitHub Actions để auto deploy.</p>
+
+      <h3>1) Khi nào cần Actions?</h3>
+      <ul>
+        <li>Có bước build (minify, bundle, generate).</li>
+        <li>Muốn quy trình tự động như công ty.</li>
+      </ul>
+
+      <h3>2) Luồng cơ bản</h3>
+      <ul>
+        <li>Push lên main → Actions chạy</li>
+        <li>Build (nếu có) → Deploy lên GitHub Pages</li>
+      </ul>
+
+      <h3>3) Điểm cộng khi phỏng vấn</h3>
+      <ul>
+        <li>Biết pipeline và automation.</li>
+        <li>Hiểu quy trình release.</li>
+      </ul>
+
+      <p><b>Kết luận:</b> Portfolio có CI/CD là một “signal” rất tốt về tư duy kỹ thuật.</p>
+    `
+  },
+
+  {
+    id: "accessibility-a11y-portfolio",
+    title: "A11y (Accessibility) cho Portfolio: chuẩn keyboard, contrast, aria, focus",
+    date: "2025-12-28",
+    tags: ["A11y", "Accessibility", "UI/UX"],
+    excerpt: "Làm website dùng được cho mọi người: tab được, focus rõ, màu đủ tương phản, modal đóng bằng ESC.",
+    content: `
+      <p>Accessibility là thứ nhiều bạn bỏ qua, nhưng làm tốt sẽ cực kỳ “pro”.</p>
+
+      <h3>1) Keyboard navigation</h3>
+      <ul>
+        <li>Tab qua được menu, button, link.</li>
+        <li>Focus state rõ (không bị mất viền focus).</li>
+      </ul>
+
+      <h3>2) Contrast & text</h3>
+      <ul>
+        <li>Màu chữ đủ tương phản với nền.</li>
+        <li>Không dùng font quá nhỏ.</li>
+      </ul>
+
+      <h3>3) Modal chuẩn</h3>
+      <ul>
+        <li>ESC đóng modal.</li>
+        <li>Khi modal mở: khóa scroll nền.</li>
+        <li>aria-hidden đúng trạng thái.</li>
+      </ul>
+
+      <p><b>Kết luận:</b> A11y là điểm cộng lớn và thể hiện bạn làm web có tâm.</p>
+    `
+  }
+];
+
   
     // ===== BLOG RENDER =====
     (function(){
@@ -671,10 +811,10 @@
   
       const modal = document.getElementById('blogModal');
       const mTitle = document.getElementById('blogModalTitle');
-      const mMeta = document.getElementById('blogModalMeta');
-      const mBody = document.getElementById('blogModalBody');
+      const mMeta  = document.getElementById('blogModalMeta');
+      const mBody  = document.getElementById('blogModalBody');
   
-      if(!grid || !tagsWrap || !input || !modal) return;
+      if(!grid || !tagsWrap || !input || !modal || !mTitle || !mMeta || !mBody) return;
   
       let activeTag = 'Tất cả';
   
@@ -739,7 +879,12 @@
         grid.innerHTML = '';
   
         if(data.length === 0){
-          grid.innerHTML = `<div class="blog-card"><div class="blog-title">Không tìm thấy bài viết phù hợp.</div><div class="blog-desc">Thử từ khóa khác hoặc chọn tag “Tất cả”.</div></div>`;
+          grid.innerHTML = `
+            <div class="blog-card">
+              <div class="blog-title">Không tìm thấy bài viết phù hợp.</div>
+              <div class="blog-desc">Thử từ khóa khác hoặc chọn tag “Tất cả”.</div>
+            </div>
+          `;
           return;
         }
   
@@ -784,3 +929,4 @@
   
 </body>
 </html>
+
